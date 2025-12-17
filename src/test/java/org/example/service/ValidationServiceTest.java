@@ -2,7 +2,7 @@ package org.example.service;
 
 
 import org.example.model.Weather;
-import org.example.repo.InMemoryWeatherHistoryRepository;
+import org.example.repo.InMemoryEarthWeatherHistoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ValidationServiceTest {
 
-    private InMemoryWeatherHistoryRepository historyRepo;
-    private ValidationService validator;
+    private InMemoryEarthWeatherHistoryRepository historyRepo;
+    private EarthValidationService validator;
 
     @BeforeEach
     void setup() {
-        historyRepo = new InMemoryWeatherHistoryRepository();
-        validator = new ValidationService(historyRepo);
+        historyRepo = new InMemoryEarthWeatherHistoryRepository();
+        validator = new EarthValidationService(historyRepo);
 
         // Seed historical bounds
         historyRepo.recordTemperature(-10);

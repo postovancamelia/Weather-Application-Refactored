@@ -1,9 +1,14 @@
+
 package org.example.repo;
 
 import java.util.OptionalInt;
 
-public class InMemoryWeatherHistoryRepository implements WeatherHistoryRepository {
-    private Integer min; // boxed internal, but exposed as OptionalInt
+/**
+ * In-memory repository for Mars weather history.
+ * Tracks min and max observed temperatures for Mars.
+ */
+public class InMemoryMarsWeatherHistoryRepository implements WeatherHistoryRepository {
+    private Integer min; // boxed internal, exposed as OptionalInt
     private Integer max;
 
     @Override
@@ -18,7 +23,11 @@ public class InMemoryWeatherHistoryRepository implements WeatherHistoryRepositor
 
     @Override
     public void recordTemperature(int temperature) {
-        if (min == null || temperature < min) min = temperature;
-        if (max == null || temperature > max) max = temperature;
+        if (min == null || temperature < min) {
+            min = temperature;
+        }
+        if (max == null || temperature > max) {
+            max = max = temperature;
+        }
     }
 }

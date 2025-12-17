@@ -1,18 +1,14 @@
 package org.example.repo;
 
-import org.example.model.Weather;
-import org.example.service.ValidationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.OptionalInt;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryWeatherHistoryRepositoryTest {
+class InMemoryEarthWeatherHistoryRepositoryTest {
 
-    private WeatherHistoryRepository historyRepo = new InMemoryWeatherHistoryRepository();
+    private WeatherHistoryRepository historyRepo = new InMemoryEarthWeatherHistoryRepository();
 
     @Test
     void checkMinMaxAfterRecordTemperature() {
