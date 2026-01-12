@@ -1,6 +1,7 @@
 
 package org.example;
 
+import org.example.comparator.WeatherDayRatingComparator;
 import org.example.config.RatingConfig;
 import org.example.model.Weather;
 import org.example.repo.InMemoryEarthWeatherHistoryRepository;
@@ -12,6 +13,9 @@ import org.example.service.ValidationResult;
 import org.example.service.EarthValidationService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.OptionalInt;
 
 public class Main {
@@ -156,6 +160,42 @@ public class Main {
             System.out.println("Day rating (mars yesterday): " + ratingMarsYesterday);
         }
         printHistory("MARS: Final history after YESTERDAY", marsHistoryRepo);
+
+
+        // --- 6) Comparator test (EARTH) ---
+        System.out.println("\n--- EARTH: Comparator test (sort by day rating) ---");
+
+        List<Weather> earthDays = new ArrayList<>();
+        earthDays.add(today);
+        earthDays.add(yesterday);
+
+// add a couple more to see sorting clearly
+        earthDays.add(new Weather(
+                LocalDateTime.now().minusDays(2).withHour(12).withMinute(0).withSecond(0).withNano(0),
+                true,   // raining
+                8,
+                18,
+                90,
+                5_000L,
+                745
+        ));
+        earthDays.add(new Weather(
+                LocalDateTime.now().minusDays(3).withHour(12).withMinute(0).withSecond(0).withNano(0),
+                false,
+                1,
+                26,
+                10,
+                25_000L,
+                755
+        ));
+
+        Comparator<Weather> earthComparator = new WeatherDayRatingComparator(rater, true); // true => desc
+        earthDays.sort(earthComparator);
+
+        for (Weather w : earthDays) {
+            System.out.println("rating=" + rater.getDayRating(w) + " -> " + w);
+        }
+
     }
 
     private static void printHistory(String label, WeatherHistoryRepository repo) {
