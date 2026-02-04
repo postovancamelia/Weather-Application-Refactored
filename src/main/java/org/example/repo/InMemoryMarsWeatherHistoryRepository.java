@@ -8,7 +8,7 @@ import java.util.OptionalInt;
  * Tracks min and max observed temperatures for Mars.
  */
 public class InMemoryMarsWeatherHistoryRepository implements WeatherHistoryRepository {
-    private Integer min; // boxed internal, exposed as OptionalInt
+    private Integer min;
     private Integer max;
 
     @Override

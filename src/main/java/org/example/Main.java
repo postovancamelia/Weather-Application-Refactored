@@ -3,6 +3,7 @@ package org.example;
 
 import org.example.config.RatingConfig;
 import org.example.model.Weather;
+import org.example.model.comparator.WeatherRatingComparator;
 import org.example.repo.InMemoryEarthWeatherHistoryRepository;
 import org.example.repo.InMemoryMarsWeatherHistoryRepository;
 import org.example.repo.WeatherHistoryRepository;
@@ -12,7 +13,7 @@ import org.example.service.ValidationResult;
 import org.example.service.EarthValidationService;
 
 import java.time.LocalDateTime;
-import java.util.OptionalInt;
+import java.util.*;
 
 public class Main {
 
@@ -156,7 +157,52 @@ public class Main {
             System.out.println("Day rating (mars yesterday): " + ratingMarsYesterday);
         }
         printHistory("MARS: Final history after YESTERDAY", marsHistoryRepo);
+
+
+
+
+        System.out.println("Sorted list on Earth");
+        List<Weather> listDays = new ArrayList<>();
+        listDays.add(today);
+        listDays.add(yesterday);
+        System.out.println(listDays);
+        List<Weather> sortedDays;
+        Collections.sort(listDays, new WeatherRatingComparator(rater));
+        System.out.println(listDays);
+
+
+
+        System.out.println("Sorted list on Mars");
+        List<Weather> listDaysMars = new ArrayList<>();
+        listDaysMars.add(marsYesterday);
+        listDaysMars.add(marsToday);
+        System.out.println(listDaysMars);
+
+        List<Weather> sortedDaysMars;
+        Collections.sort(listDaysMars, new WeatherRatingComparator(marsRater));
+        System.out.println(listDaysMars);
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static void printHistory(String label, WeatherHistoryRepository repo) {
         OptionalInt minOpt = repo.getMinObservedTemperature();

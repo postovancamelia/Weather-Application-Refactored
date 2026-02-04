@@ -3,7 +3,7 @@ package org.example.repo;
 import java.util.OptionalInt;
 
 public class InMemoryEarthWeatherHistoryRepository implements WeatherHistoryRepository {
-    private Integer min; // boxed internal, but exposed as OptionalInt
+    private Integer min;
     private Integer max;
 
     @Override

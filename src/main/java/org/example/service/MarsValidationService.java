@@ -15,11 +15,11 @@ import java.util.OptionalInt;
 public class MarsValidationService implements ValidationService {
     private final InMemoryMarsWeatherHistoryRepository history;
 
-    // --- Structural bounds (units must match Weather getters) ---
-    private static final int MIN_ALLOWED_PRESSURE = 100;   // example value
-    private static final int MAX_ALLOWED_PRESSURE = 1200;  // example value
-    private static final int MIN_ALLOWED_CLOUDS = 0;     // %
-    private static final int MAX_ALLOWED_CLOUDS = 100;   // %
+
+    private static final int MIN_ALLOWED_PRESSURE = 100;
+    private static final int MAX_ALLOWED_PRESSURE = 1200;
+    private static final int MIN_ALLOWED_CLOUDS = 0;
+    private static final int MAX_ALLOWED_CLOUDS = 100;
 
     public MarsValidationService(InMemoryMarsWeatherHistoryRepository  history) {
         this.history = history;
@@ -35,7 +35,7 @@ public class MarsValidationService implements ValidationService {
         List<String> errors = new ArrayList<>();
         List<String> warnings = new ArrayList<>();
 
-        // --- Structural (reject) ---
+        // Structural reject
         if (w.getWindSpeed() < 0) {
             errors.add("windSpeed cannot be negative");
         }
@@ -50,7 +50,7 @@ public class MarsValidationService implements ValidationService {
                     + MIN_ALLOWED_PRESSURE + ".." + MAX_ALLOWED_PRESSURE);
         }
 
-        // --- Historical (warn) ---
+        //  Historical warn
         OptionalInt minOpt = history.getMinObservedTemperature();
         OptionalInt maxOpt = history.getMaxObservedTemperature();
 
@@ -67,7 +67,7 @@ public class MarsValidationService implements ValidationService {
             warnings.add("no historical bounds available yet");
         }
 
-        // --- Update history only if structurally valid ---
+        //  Update history only if structurally valid
         boolean updated = false;
         if (errors.isEmpty()) {
             history.recordTemperature(w.getTemperature());
