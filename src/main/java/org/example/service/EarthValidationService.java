@@ -12,6 +12,10 @@ public class EarthValidationService implements ValidationService {
 
     private final InMemoryEarthWeatherHistoryRepository history;
 
+    private static final int MIN_ALLOWED_PRESSURE = 700;
+    private static final int MAX_ALLOWED_PRESSURE = 800;
+    private static final int MIN_ALLOWED_CLOUDS = 0;
+    private static final int MAX_ALLOWED_CLOUDS = 100;
     public EarthValidationService(InMemoryEarthWeatherHistoryRepository history) {
         this.history = history;
     }
@@ -32,18 +36,18 @@ public class EarthValidationService implements ValidationService {
         List<String> errors = new ArrayList<>();
         List<String> warnings = new ArrayList<>();
 
-        // --- Structural (reject) ---
+        // Structural reject
         if (w.getWindSpeed() < 0) {
             errors.add("windSpeed cannot be negative");
         }
-        if (w.getCloudsPercentage() < 0 || w.getCloudsPercentage() > 100) {
+        if (w.getCloudsPercentage() < MIN_ALLOWED_CLOUDS || w.getCloudsPercentage() > MAX_ALLOWED_CLOUDS) {
             errors.add("cloudsPercentage must be between 0 and 100");
         }
-        if (w.getPressure() < 700 || w.getPressure() > 800) {
+        if (w.getPressure() < MIN_ALLOWED_PRESSURE || w.getPressure() > MAX_ALLOWED_PRESSURE) {
             errors.add("pressure must be in range 700..800 hPa");
         }
 
-        // --- Historical (warn, do NOT reject) ---
+        // Historical warn, not reject
         OptionalInt minOpt = history.getMinObservedTemperature();
         OptionalInt maxOpt = history.getMaxObservedTemperature();
 
@@ -62,7 +66,7 @@ public class EarthValidationService implements ValidationService {
             warnings.add("no historical bounds available yet");
         }
 
-        // --- Update history only if structurally valid ---
+        // Update history only if structurally valid
         boolean updated = false;
         if (errors.isEmpty()) {
             history.recordTemperature(w.getTemperature());
