@@ -1,6 +1,7 @@
 
 package org.example;
 
+import org.example.comparator.WeatherDayRatingComparator;
 import org.example.config.RatingConfig;
 import org.example.model.Weather;
 import org.example.model.comparator.WeatherRatingComparator;
